@@ -1,0 +1,639 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #000;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    color: #1a1a1a;
+    line-height: 1.6;
+    transition: background 0.6s ease;
+}
+
+/* When the intro video starts, switch to white background and adjust text colors */
+body.video-start {
+    background: #fff;
+    color: #1a1a1a;
+}
+
+/* Video intro translation & fade */
+#videoIntro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    transition: transform 0.6s ease, opacity 0.6s ease, background 0.6s ease;
+    transform: translateY(8px);
+    background: transparent;
+}
+
+#videoIntro.playing {
+    transform: translateY(0);
+}
+
+/* When ending, translate upwards and fade out */
+#videoIntro.fade-out {
+    transform: translateY(-50px);
+    opacity: 0;
+}
+
+/* Tap text default & when white bg */
+.tap-text {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffffff;
+    font-weight: 500;
+    pointer-events: none;
+    transition: color 0.4s ease, opacity 0.4s ease;
+}
+
+body.video-start .tap-text {
+    color: #111;
+    opacity: 0.9;
+}
+
+
+@keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.1); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* INVITATION CONTENT */
+.invitation-content {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px) translateZ(0px) scale(0.9);
+    opacity: 0;
+    transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s;
+    z-index: 1;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.3) 100%), url("img1.jpg") center/cover no-repeat;
+    border-radius: 10px;
+    padding: 40px 30px;
+    backdrop-filter: blur(10px);
+    width: 90%;
+    max-width: 300px;
+}
+
+.invitation-content img {
+    width: 80%;
+    max-width: 250px;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.invitation-content h1 {
+    font-size: 2rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.invitation-content p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+}
+
+.invitation-content span {
+    font-size: 0.95rem;
+    color: #e0e0e0;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+}
+
+
+/* PAGES */
+.hidden {
+    display: none;
+}
+
+#pages {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    background: linear-gradient(180deg, #fafafa 0%, #ffffff 50%, #f5f7fa 100%);
+}
+
+.page-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.page {
+    height: 100vh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.page h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+    z-index: 1;
+    line-height: 1.1;
+}
+
+.page h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+    z-index: 1;
+}
+
+.page p {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #d4a574;
+    line-height: 1.6;
+    z-index: 1;
+}
+
+.page .gold {
+    color: #d4a574;
+    font-weight: 600;
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+}
+
+.page img {
+    width: 90%;
+    max-width: 450px;
+    height: auto;
+    border-radius: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1;
+    object-fit: cover;
+}
+
+.page img:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 50px rgba(102, 126, 234, 0.25);
+}
+
+.page iframe {
+    width: 100%;
+    height: 350px;
+    border: 0;
+    border-radius: 20px;
+    margin-top: 30px;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.15);
+    z-index: 1;
+}
+
+/* PAGE 1 STYLES */
+#page1 {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.35) 100%), url("img.jpg") center/cover no-repeat;
+    background-attachment: fixed;
+}
+
+#page1 .and {
+    color: #e8d5b7;
+}
+
+#page1 h1 {
+    color: #ffffff;
+    text-shadow: 3px 3px 12px rgba(0, 0, 0, 0.5);
+}
+
+#page1 .divider {
+    background: linear-gradient(90deg, transparent, #e8d5b7, transparent);
+}
+
+#page1 .date-label {
+    color: #f0f0f0;
+}
+
+#page1 .invitation-text {
+    color: #f5f5f5;
+}
+
+#page3 {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.35) 100%), url("img1.jpg") center/cover no-repeat;
+    background-attachment: fixed;
+}
+
+.couple-names {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.couple-names .and {
+    display: block;
+    font-size: 0.95rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #c9a961;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.couple-names h1 {
+    color: #ffffff;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+    font-size: 3.8rem;
+    margin-bottom: 20px;
+}
+
+.divider {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #c9a961, transparent);
+    margin: 20px auto;
+    border-radius: 2px;
+}
+
+.couple-names .date-label {
+    display: block;
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    letter-spacing: 0.5px;
+    font-weight: 300;
+}
+
+.invitation-text {
+    color: #ffffff;
+    font-size: 1.15rem;
+    font-weight: 300;
+    letter-spacing: 0.3px;
+    max-width: 500px;
+    text-shadow: 1px 1px 3px rgba(248, 248, 248, 0.3);
+}
+
+
+@keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+}
+
+/* PAGE 2 STYLES */
+.map-container {
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.map-container:hover {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+#page2 {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafb 100%);
+}
+
+.venue-info {
+    width: 100%;
+    text-align: center;
+}
+
+.venue-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2a2a2a;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.rsvp-btn {
+    padding: 14px 48px;
+    border: 2px solid #c9a961;
+    border-radius: 50px;
+    background: rgba(201, 169, 97, 0.1);
+    color: #c9a961;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-transform: uppercase;
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Inter', sans-serif;
+    margin-top: 20px;
+}
+
+.rsvp-btn span {
+    display: inline-block;
+}
+
+.rsvp-btn svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.4s ease;
+}
+
+.rsvp-btn:hover {
+    background: #c9a961;
+    color: #1a1a1a;
+    box-shadow: 0 15px 40px rgba(201, 169, 97, 0.4);
+    transform: translateY(-3px);
+}
+
+.rsvp-btn:hover svg {
+    transform: translateX(3);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+#page3 .gold {
+    color: #c9a961;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.rsvp-text {
+    color: #e0e0e0;
+    font-size: 1.05rem;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    margin: 20px 0 30px 0;
+}
+
+.rsvp-btn {
+    padding: 14px 40px;
+    border: 2px solid #c9a961;
+    border-radius: 50px;
+    background: rgba(201, 169, 97, 0.1);
+    color: #c9a961;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    backdrop-filter: blur(5px);
+}
+
+.rsvp-btn:hover {
+    background: #c9a961;
+    color: #1a1a1a;
+    box-shadow: 0 10px 30px rgba(201, 169, 97, 0.3);
+    transform: translateY(-2px);
+}
+
+/* New details page (modern cards + RSVP form) */
+.details-page {
+    max-width: 900px;
+    padding: 20px;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin: 24px 0 36px 0;
+}
+
+.card {
+    background: linear-gradient(180deg, #ffffff, #fafafa);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 8px 30px rgba(30, 40, 60, 0.06);
+    border: 1px solid rgba(20,20,20,0.03);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card h3 {
+    margin-bottom: 6px;
+    color: #1a1a1a;
+    font-size: 1.1rem;
+}
+
+.card p {
+    color: #4b5563;
+    line-height: 1.5;
+}
+
+.rsvp-form {
+    background: linear-gradient(180deg, #ffffff, #fcfcfd);
+    padding: 22px;
+    border-radius: 14px;
+    box-shadow: 0 10px 40px rgba(16, 24, 40, 0.04);
+    border: 1px solid rgba(20,20,20,0.04);
+    max-width: 640px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.rsvp-form input,
+.rsvp-form textarea {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(30, 41, 59, 0.06);
+    font-size: 0.98rem;
+    color: #111827;
+    background: #fff;
+    resize: vertical;
+}
+
+.rsvp-form textarea { min-height: 90px; }
+
+.rsvp-thanks {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    text-align: center;
+    padding: 14px;
+    background: #f3faf7;
+    color: #045d56;
+    border-radius: 10px;
+    margin-top: 8px;
+}
+
+/* small hover */
+.card:hover { transform: translateY(-6px); box-shadow: 0 18px 50px rgba(20,20,40,0.06); }
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    .details-grid { grid-template-columns: 1fr; }
+    .card { padding: 16px; }
+    .rsvp-form { padding: 16px; }
+    .envelope {
+        width: 100vw;
+    }
+    
+    .wax {
+        width: 60px;
+    }
+    
+    .page h1 {
+        font-size: 2rem;
+    }
+    
+    .page h2 {
+        font-size: 1.8rem;
+    }
+    
+    .page img {
+        max-width: 90vw;
+    }
+    
+    .invitation-content img {
+        width: 70%;
+        max-width: 220px;
+    }
+    
+    .invitation-content h1 {
+        font-size: 1.5rem;
+    }
+    
+    .invitation-content p {
+        font-size: 1rem;
+    }
+    
+    .invitation-content span {
+        font-size: 0.9rem;
+    }
+    
+    .page iframe {
+        height: 280px;
+        width: 95%;
+    }
+}
+
+@media (max-width: 480px) {
+    .page {
+        padding: 30px 15px;
+    }
+    
+    .page h1 {
+        font-size: 1.5rem;
+    }
+    
+    .page h2 {
+        font-size: 1.3rem;
+    }
+    
+    .page p {
+        font-size: 1rem;
+    }
+    /* VIDEO INTRO */
+#videoIntro {
+    position: fixed;
+    inset: 0;
+    background: rgb(255, 255, 255);
+    z-index: 200;
+    transition: opacity 1s ease;
+}
+
+#videoIntro video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#skipIntro {
+    position: absolute;
+    bottom: 8%;
+    right: 8%;
+    padding: 10px 22px;
+    border-radius: 30px;
+    border: none;
+    background: rgba(255,255,255,0.85);
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+#videoIntro {
+    position: fixed;
+    inset: 0;
+    background: rgb(255, 255, 255);
+    z-index: 100;
+}
+
+#videoIntro video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+#videoIntro {
+    position: fixed;
+    inset: 0;
+    background: rgb(253, 253, 253);
+    z-index: 100;
+    transition: opacity 1s ease;
+}
+
+#videoIntro video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.tap-text {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    opacity: 0.85;
+}
+
+.hidden {
+    display: none;
+}
+
+}
